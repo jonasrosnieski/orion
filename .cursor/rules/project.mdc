@@ -1,0 +1,46 @@
+---
+description: ORION — Unity sci-fi game (AETHER constellation / VEGA)
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# ORION — Project Rules
+
+> Parent: AETHER_BRAIN.md + GLOBAL_BRAIN.md + AGENT_PLAYBOOK.md
+> Sub-layers cannot override parent — parent wins on conflicts.
+
+## Context
+
+**ORION** is a node in the AETHER constellation (category: VEGA — Games).
+Hub orchestration lives in `C:\Users\jonas\Projects\aether` — do not implement hub features here.
+
+Read `BRAIN.md` before coding.
+
+## Communication
+
+- Portuguese with Jonas; code/commits/docs in English
+- C# with explicit types; avoid `dynamic`
+
+## Stack
+
+Unity 6, URP, Input System, C#
+
+## Session Git Workflow (Mandatory — AETHER §XX)
+
+When work is **complete and verified**:
+
+1. Feature branch: `feat/orion-<short>` or `fix/orion-<issue>`
+2. Commit: `type(orion): why` — never push to `main`
+3. `git push -u origin HEAD`
+4. `gh pr create` — Summary + Test plan; report PR URL to Jonas
+5. Chronicle event (`code_change` / `project_update`, `source: 'orion'`)
+6. Update `BRAIN.md` checkboxes for shipped features
+
+**Ask Jonas before:** secrets in diff, destructive git, brain changes, merge to `main`.
+
+**Never:** end session with uncommitted completed work on disk.
+
+## Git
+
+- Own GitHub repo — independent history from hub
+- Never commit `Library/`, `Temp/`, `UserSettings/`, or `.env`
