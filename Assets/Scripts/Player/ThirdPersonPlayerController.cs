@@ -9,13 +9,13 @@ public sealed class ThirdPersonPlayerController : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
 
     private CharacterController characterController;
-    private Animator animator;
+    private MeshyCharacterAnimation meshyAnimation;
     private float verticalVelocity;
 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>();
+        meshyAnimation = GetComponent<MeshyCharacterAnimation>();
     }
 
     public void SetCameraTransform(Transform camera)
@@ -46,7 +46,7 @@ public sealed class ThirdPersonPlayerController : MonoBehaviour
         moveDirection.y = verticalVelocity;
         characterController.Move(moveDirection * Time.deltaTime);
 
-        UpdateAnimator(input.magnitude);
+        UpdateLocomotionAnimation(input.magnitude);
     }
 
     private Vector3 GetCameraRelativeDirection(Vector3 input)
@@ -83,25 +83,8 @@ public sealed class ThirdPersonPlayerController : MonoBehaviour
             rotationSpeed * Time.deltaTime);
     }
 
-    private void UpdateAnimator(float inputMagnitude)
+    private void UpdateLocomotionAnimation(float inputMagnitude)
     {
-        if (animator == null)
-        {
-            return;
-        }
-
-        var isMoving = inputMagnitude > 0.1f;
-        animator.speed = isMoving ? 1f : 0f;
-
-        if (animator.runtimeAnimatorController != null)
-        {
-            foreach (var parameter in animator.parameters)
-            {
-                if (parameter.name == "Speed" && parameter.type == AnimatorControllerParameterType.Float)
-                {
-                    animator.SetFloat("Speed", isMoving ? inputMagnitude : 0f);
-                }
-            }
-        }
+        meshyAnimation?.SetLocomotion(inputMagnitude);
     }
 }

@@ -40,6 +40,8 @@ public static class PlaygroundSceneBuilder
 
         AssetDatabase.ImportAsset(WalkModelPath, ImportAssetOptions.ForceUpdate);
 
+        MeshyAnimationUtility.EnsureWalkAnimationImported(WalkModelPath);
+
         var modelPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(WalkModelPath);
         if (modelPrefab == null)
         {
@@ -70,7 +72,17 @@ public static class PlaygroundSceneBuilder
         AssetDatabase.Refresh();
 
         Debug.Log($"Playground scene saved to {ScenePath} with Cosmic Cadet third-person setup.");
-        EditorApplication.Exit(0);
+
+        if (Application.isBatchMode)
+        {
+            EditorApplication.Exit(0);
+        }
+    }
+
+    [MenuItem("ORION/Rebuild Playground Scene")]
+    public static void RebuildFromMenu()
+    {
+        Build();
     }
 
     private static void EnsureFolders()
@@ -169,11 +181,13 @@ public static class PlaygroundSceneBuilder
         var modelInstance = (GameObject)PrefabUtility.InstantiatePrefab(modelPrefab, player.transform);
         modelInstance.name = "Cosmic_Cadet";
         AlignModelToGround(modelInstance);
+        MeshyAnimationUtility.BindWalkAnimation(modelInstance, WalkModelPath);
 
         var controller = player.AddComponent<CharacterController>();
         FitCharacterController(controller, modelInstance);
 
         player.AddComponent<ThirdPersonPlayerController>();
+        player.AddComponent<MeshyCharacterAnimation>();
 
         var animator = modelInstance.GetComponentInChildren<Animator>();
         if (animator != null)
