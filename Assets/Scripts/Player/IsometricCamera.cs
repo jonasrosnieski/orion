@@ -5,19 +5,20 @@ using UnityEngine;
 /// </summary>
 public sealed class IsometricCamera : MonoBehaviour
 {
-    private const float IsometricPitch = 35.264f;
-    private const float IsometricYaw = 45f;
+    private static readonly Quaternion IsometricRotation = Quaternion.Euler(35.264f, 45f, 0f);
 
     [SerializeField] private Transform target;
-    [SerializeField] private Vector3 worldOffset = new(10f, 10f, -10f);
+    [SerializeField] private float lookAtHeight = 1.05f;
+    [SerializeField] private float distance = 12f;
     [SerializeField] private float followSmoothing = 14f;
-    [SerializeField] private float orthographicSize = 2.8f;
+    [SerializeField] private float orthographicSize = 3.2f;
 
     private Camera cameraComponent;
 
     public void SetTarget(Transform followTarget)
     {
         target = followTarget;
+        SnapToTarget();
     }
 
     private void Awake()
@@ -27,7 +28,11 @@ public sealed class IsometricCamera : MonoBehaviour
         cameraComponent.orthographicSize = orthographicSize;
         cameraComponent.nearClipPlane = 0.1f;
         cameraComponent.farClipPlane = 200f;
-        transform.rotation = Quaternion.Euler(IsometricPitch, IsometricYaw, 0f);
+    }
+
+    private void Start()
+    {
+        SnapToTarget();
     }
 
     private void LateUpdate()
@@ -37,11 +42,27 @@ public sealed class IsometricCamera : MonoBehaviour
             return;
         }
 
-        var desiredPosition = target.position + worldOffset;
+        var focusPoint = target.position + Vector3.up * lookAtHeight;
+        var forward = IsometricRotation * Vector3.forward;
+        var desiredPosition = focusPoint - forward * distance;
+
         transform.position = Vector3.Lerp(
             transform.position,
             desiredPosition,
             followSmoothing * Time.deltaTime);
-        transform.rotation = Quaternion.Euler(IsometricPitch, IsometricYaw, 0f);
+        transform.rotation = IsometricRotation;
+    }
+
+    private void SnapToTarget()
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        var focusPoint = target.position + Vector3.up * lookAtHeight;
+        var forward = IsometricRotation * Vector3.forward;
+        transform.position = focusPoint - forward * distance;
+        transform.rotation = IsometricRotation;
     }
 }

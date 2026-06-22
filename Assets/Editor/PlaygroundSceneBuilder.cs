@@ -176,7 +176,7 @@ public static class PlaygroundSceneBuilder
     private static GameObject CreatePlayer(GameObject modelPrefab)
     {
         var player = new GameObject("Player");
-        player.transform.position = Vector3.zero;
+        player.transform.position = new Vector3(0f, 0f, 0f);
 
         var modelInstance = (GameObject)PrefabUtility.InstantiatePrefab(modelPrefab, player.transform);
         modelInstance.name = "Cosmic_Cadet";
@@ -207,16 +207,13 @@ public static class PlaygroundSceneBuilder
         var camera = cameraGo.AddComponent<Camera>();
         camera.clearFlags = CameraClearFlags.Skybox;
         camera.orthographic = true;
-        camera.orthographicSize = 2.8f;
+        camera.orthographicSize = 3.2f;
         camera.nearClipPlane = 0.1f;
         camera.farClipPlane = 200f;
         cameraGo.AddComponent<AudioListener>();
 
         var isometricCamera = cameraGo.AddComponent<IsometricCamera>();
         isometricCamera.SetTarget(target);
-
-        cameraGo.transform.position = target.position + new Vector3(10f, 10f, -10f);
-        cameraGo.transform.rotation = Quaternion.Euler(35.264f, 45f, 0f);
 
         return camera;
     }
@@ -249,8 +246,8 @@ public static class PlaygroundSceneBuilder
             bounds.Encapsulate(renderers[i].bounds);
         }
 
-        var offset = modelRoot.transform.position - bounds.min;
-        modelRoot.transform.localPosition = new Vector3(0f, offset.y, 0f);
+        var worldFeetOffset = bounds.min.y - modelRoot.transform.parent.position.y;
+        modelRoot.transform.localPosition = new Vector3(0f, -worldFeetOffset, 0f);
     }
 
     private static void FitCharacterController(CharacterController controller, GameObject modelRoot)
