@@ -4,6 +4,9 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MeshyTest.unity
+    guid: 44233a14a097fd24b8fb37b2b1ddec54
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
