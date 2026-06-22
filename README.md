@@ -6,10 +6,12 @@ See [BRAIN.md](BRAIN.md) for concept, pillars, and roadmap.
 
 ## Quick start
 
-1. Install [Unity Hub](https://unity.com/download) and **Unity 6** (6000.0 LTS or newer).
-2. In Unity Hub → **Add** → select this folder (`orion`).
-3. Open the project — Unity will import packages and generate local files (`Library/`, `.csproj`, etc.).
-4. Create or open `Assets/Scenes/Main.unity` as the bootstrap scene.
+**Installed on this machine:** Unity Hub 3.18, Unity **6000.0.77f1**, Visual Studio 2022 (Game + Unity workload).
+
+1. Open **Unity Hub** → project **ORION** at `C:\Users\jonas\Projects\orion` (or **Add** if not listed).
+2. Open the project — first load imports URP packages (~1–2 min).
+3. Create `Assets/Scenes/Main.unity` as the bootstrap scene.
+4. Meshy models → see [Assets/Art/Meshy/README.md](Assets/Art/Meshy/README.md).
 
 ## Repo layout
 

@@ -80,3 +80,6 @@ Thumbs.db
 # Env / secrets
 .env
 .env.*
+
+# Local import logs
+unity-import.log

@@ -73,6 +73,6 @@ Assets/
 
 - [x] Repository created
 - [x] BRAIN defined
-- [ ] Unity project opens without errors
+- [x] Unity project opens without errors (6000.0.77f1)
 - [ ] Main scene + player controller MVP
 - [ ] First sector greybox
