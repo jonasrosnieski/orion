@@ -55,7 +55,7 @@ public static class PlaygroundSceneBuilder
         CreateLighting();
         CreateGround();
         var player = CreatePlayer(modelPrefab);
-        var camera = CreateThirdPersonCamera(player.transform);
+        var camera = CreateIsometricCamera(player.transform);
 
         var playerController = player.GetComponent<ThirdPersonPlayerController>();
         playerController.SetCameraTransform(camera.transform);
@@ -199,22 +199,24 @@ public static class PlaygroundSceneBuilder
         return player;
     }
 
-    private static Camera CreateThirdPersonCamera(Transform target)
+    private static Camera CreateIsometricCamera(Transform target)
     {
-        var cameraGo = new GameObject("ThirdPersonCamera");
+        var cameraGo = new GameObject("IsometricCamera");
         cameraGo.tag = "MainCamera";
 
         var camera = cameraGo.AddComponent<Camera>();
         camera.clearFlags = CameraClearFlags.Skybox;
+        camera.orthographic = true;
+        camera.orthographicSize = 2.8f;
         camera.nearClipPlane = 0.1f;
         camera.farClipPlane = 200f;
         cameraGo.AddComponent<AudioListener>();
 
-        var thirdPersonCamera = cameraGo.AddComponent<ThirdPersonCamera>();
-        thirdPersonCamera.SetTarget(target);
+        var isometricCamera = cameraGo.AddComponent<IsometricCamera>();
+        isometricCamera.SetTarget(target);
 
-        cameraGo.transform.position = target.position + new Vector3(0.4f, 1.55f, -4.2f);
-        cameraGo.transform.LookAt(target.position + Vector3.up * 1.2f);
+        cameraGo.transform.position = target.position + new Vector3(10f, 10f, -10f);
+        cameraGo.transform.rotation = Quaternion.Euler(35.264f, 45f, 0f);
 
         return camera;
     }

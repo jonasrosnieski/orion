@@ -24,9 +24,8 @@ In the file picker: navigate to `Projects` → click the **`orion`** folder once
 
 ## Controls (Play mode)
 
-- **WASD** — move astronaut (camera-relative)
-- **Right mouse button + drag** — orbit camera
-- Without RMB, camera follows behind the player
+- **WASD** — move astronaut (relative to isometric camera)
+- Fixed orthographic camera at classic isometric angle (35.26° × 45°)
 
 ## Test scene
 
