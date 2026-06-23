@@ -41,6 +41,7 @@ public static class PlaygroundSceneBuilder
         AssetDatabase.ImportAsset(WalkModelPath, ImportAssetOptions.ForceUpdate);
 
         MeshyAnimationUtility.EnsureWalkAnimationImported(WalkModelPath);
+        MeshyAnimationResampler.GetOrCreateResampledWalkClip(WalkModelPath, forceRebuild: true);
 
         var modelPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(WalkModelPath);
         if (modelPrefab == null)

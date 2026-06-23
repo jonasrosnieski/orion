@@ -41,26 +41,30 @@ public static class MeshyAnimationUtility
             return;
         }
 
-        var walkClip = clips.FirstOrDefault(clip =>
-            clip.name.Contains("Walk", StringComparison.OrdinalIgnoreCase)) ?? clips[0];
+        var walkClip = MeshyAnimationResampler.GetOrCreateResampledWalkClip(glbAssetPath)
+            ?? clips.FirstOrDefault(clip =>
+                clip.name.Contains("Walk", StringComparison.OrdinalIgnoreCase))
+            ?? clips[0];
 
         var legacyAnimation = modelRoot.GetComponentInChildren<Animation>();
         if (legacyAnimation != null)
         {
             legacyAnimation.playAutomatically = false;
-            if (legacyAnimation.clip != null)
+
+            var clipNames = new System.Collections.Generic.List<string>();
+            foreach (AnimationState state in legacyAnimation)
             {
-                Debug.Log($"Legacy walk clip ready: {legacyAnimation.clip.name}");
-                return;
+                clipNames.Add(state.name);
             }
 
-            if (legacyAnimation.GetClip(walkClip.name) == null)
+            foreach (var clipName in clipNames)
             {
-                legacyAnimation.AddClip(walkClip, walkClip.name);
+                legacyAnimation.RemoveClip(clipName);
             }
 
+            legacyAnimation.AddClip(walkClip, walkClip.name);
             legacyAnimation.clip = walkClip;
-            Debug.Log($"Legacy walk clip assigned: {walkClip.name}");
+            Debug.Log($"Legacy walk clip assigned ({MeshyAnimationResampler.WalkCycleFrameCount} frames): {walkClip.name}");
             return;
         }
 
